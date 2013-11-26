@@ -7,9 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "DuxQuickFindPanelController.h"
+#import "DuxQuickFindPanel.h"
 
 @interface QAppDelegate : NSObject <NSApplicationDelegate>
 
-@property (assign) IBOutlet NSWindow *window;
+@property (strong) IBOutlet DuxQuickFindPanelController *findController;
 
 @end

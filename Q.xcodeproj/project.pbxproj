@@ -18,6 +18,9 @@
 		38272230184417A4004A78D4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3827220F184417A4004A78D4 /* Cocoa.framework */; };
 		38272238184417A4004A78D4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38272236184417A4004A78D4 /* InfoPlist.strings */; };
 		3827223A184417A4004A78D4 /* QTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38272239184417A4004A78D4 /* QTests.m */; };
+		38272248184417E2004A78D4 /* DuxQuickFindPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38272245184417E2004A78D4 /* DuxQuickFindPanelController.m */; };
+		38272249184417E2004A78D4 /* DuxQuickFindPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38272247184417E2004A78D4 /* DuxQuickFindPanel.m */; };
+		3827224B18442562004A78D4 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3827224A18442562004A78D4 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +53,11 @@
 		38272235184417A4004A78D4 /* QTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QTests-Info.plist"; sourceTree = "<group>"; };
 		38272237184417A4004A78D4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		38272239184417A4004A78D4 /* QTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QTests.m; sourceTree = "<group>"; };
+		38272244184417E2004A78D4 /* DuxQuickFindPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DuxQuickFindPanelController.h; sourceTree = "<group>"; };
+		38272245184417E2004A78D4 /* DuxQuickFindPanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DuxQuickFindPanelController.m; sourceTree = "<group>"; };
+		38272246184417E2004A78D4 /* DuxQuickFindPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DuxQuickFindPanel.h; sourceTree = "<group>"; };
+		38272247184417E2004A78D4 /* DuxQuickFindPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DuxQuickFindPanel.m; sourceTree = "<group>"; };
+		3827224A18442562004A78D4 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3827224B18442562004A78D4 /* Carbon.framework in Frameworks */,
 				38272210184417A4004A78D4 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +104,7 @@
 		3827220E184417A4004A78D4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3827224A18442562004A78D4 /* Carbon.framework */,
 				3827220F184417A4004A78D4 /* Cocoa.framework */,
 				3827222E184417A4004A78D4 /* XCTest.framework */,
 				38272211184417A4004A78D4 /* Other Frameworks */,
@@ -118,6 +128,10 @@
 				38272221184417A4004A78D4 /* QAppDelegate.h */,
 				38272222184417A4004A78D4 /* QAppDelegate.m */,
 				38272224184417A4004A78D4 /* MainMenu.xib */,
+				38272244184417E2004A78D4 /* DuxQuickFindPanelController.h */,
+				38272245184417E2004A78D4 /* DuxQuickFindPanelController.m */,
+				38272246184417E2004A78D4 /* DuxQuickFindPanel.h */,
+				38272247184417E2004A78D4 /* DuxQuickFindPanel.m */,
 				38272227184417A4004A78D4 /* Images.xcassets */,
 				38272216184417A4004A78D4 /* Supporting Files */,
 			);
@@ -254,7 +268,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				38272223184417A4004A78D4 /* QAppDelegate.m in Sources */,
+				38272249184417E2004A78D4 /* DuxQuickFindPanel.m in Sources */,
 				3827221C184417A4004A78D4 /* main.m in Sources */,
+				38272248184417E2004A78D4 /* DuxQuickFindPanelController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
