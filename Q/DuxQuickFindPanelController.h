@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JavaScriptCore/JavaScriptCore.h>
 #import "DuxQuickFindPanel.h"
 
 @interface DuxQuickFindPanelController : NSObject <NSTableViewDataSource, NSTableViewDelegate, NSTextFieldDelegate>

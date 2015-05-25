@@ -17,7 +17,7 @@
 @property NSTableView *resultsView;
 @property (nonatomic) NSMutableArray *contents;
 @property (nonatomic) NSMutableArray *oldContents;
-@property (nonatomic) id scriptResult;
+@property (nonatomic) id expressionResult;
 
 @property NSDate *lastReload;
 
@@ -103,22 +103,22 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-  NSUInteger scriptResult = self.scriptResult ? 1 : 0;
+  NSUInteger expressionResult = self.expressionResult ? 1 : 0;
   
   if (!self.matchingResultIndexes)
-    return scriptResult + self.contents.count + self.oldContents.count;
+    return expressionResult + self.contents.count + self.oldContents.count;
   
-  return scriptResult + self.matchingResultIndexes.count;
+  return expressionResult + self.matchingResultIndexes.count;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-  if (self.scriptResult) {
+  if (self.expressionResult) {
     if (row == 0) {
       if ([tableColumn.identifier isEqualToString:@"icon"]) {
         return [NSApp applicationIconImage];
       } else {
-        return self.scriptResult;
+        return self.expressionResult;
       }
     }
     row--;
@@ -141,39 +141,19 @@
 
 - (void)controlTextDidChange:(NSNotification *)obj
 {
-  [self evaluateJavaScript];
+  [self evaluateExpression];
   [self reload];
 }
 
-- (void)evaluateJavaScript
+- (void)evaluateExpression
 {
-  JSContext *jsContext = [[JSContext alloc] initWithVirtualMachine:[[JSVirtualMachine alloc] init]];
-  JSStringRef jsString = JSStringCreateWithUTF8CString([self.searchField.stringValue cStringUsingEncoding:NSUTF8StringEncoding]);
-  
-  bool success = JSCheckScriptSyntax(jsContext.JSGlobalContextRef, jsString, NULL, 0, NULL);
-  
-  if (!success) {
-    self.scriptResult = nil;
+  @try {
+    NSExpression *expression = [NSExpression expressionWithFormat:self.searchField.stringValue];
+    self.expressionResult = [expression expressionValueWithObject:nil context:nil];
   }
-  
-  JSValueRef jsValue = JSEvaluateScript(jsContext.JSGlobalContextRef, jsString, NULL, NULL, 0, NULL);
-  
-  if (JSValueIsUndefined(jsContext.JSGlobalContextRef, jsValue)) {
-    self.scriptResult = nil;
-  } else if (JSValueIsNull(jsContext.JSGlobalContextRef, jsValue)) {
-    self.scriptResult = nil;
-  } else {
-    JSStringRef resultJsString = JSValueToStringCopy(jsContext.JSGlobalContextRef, jsValue, NULL);
-    size_t bufferSize = JSStringGetMaximumUTF8CStringSize(resultJsString);
-    char buffer[bufferSize];
-    JSStringGetUTF8CString(resultJsString, buffer, bufferSize);
-    NSString *resultString = [NSString stringWithUTF8String:buffer];
-    JSStringRelease(resultJsString);
-    
-    self.scriptResult = resultString;
+  @catch (NSException *exception) {
+    self.expressionResult = nil;
   }
-  
-  JSStringRelease(jsString);
 }
 
 - (void)reload
@@ -285,7 +265,7 @@
     return nil;
   
   NSInteger row = [self.resultsView selectedRow];
-  if (self.scriptResult) {
+  if (self.expressionResult) {
     if (row == 0)
       return nil;
     
