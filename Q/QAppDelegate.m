@@ -52,7 +52,8 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   eventType.eventKind = kEventHotKeyReleased;
   InstallApplicationEventHandler(hotKeyFunction,1,&eventType, (__bridge void*)self,NULL);
   //hotkey
-  UInt32 keyCode = 0x31; //space
+//  UInt32 keyCode = 0x31; //space
+  UInt32 keyCode = 7; // q
   EventHotKeyRef theRef = NULL;
   EventHotKeyID keyID;
   keyID.signature = 'QApp';
