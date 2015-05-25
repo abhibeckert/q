@@ -13,7 +13,7 @@
 @interface QAppDelegate()
 
 @property (strong) NSOperationQueue *updateSearchPathsQueue;
-@property (strong) NSURL *searchUrl;
+@property (strong) NSArray *searchUrls;
 
 - (void)showPanel;
 
@@ -40,7 +40,9 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   self.updateSearchPathsQueue = [[NSOperationQueue alloc] init];
   self.updateSearchPathsQueue.maxConcurrentOperationCount = 1;
   
-  self.searchUrl = [NSURL fileURLWithPath:@"/Applications"];
+  self.searchUrls = @[[NSURL fileURLWithPath:@"/Applications"],
+                      [NSURL fileURLWithPath:@"/Applications/Xcode.app/Contents/Applications/"],
+                      [NSURL fileURLWithPath:@"~/Applications".stringByStandardizingPath]];
   
   // init hot key
   //handler
@@ -79,24 +81,34 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
 {
   // cancel all operation queues
   [self.updateSearchPathsQueue cancelAllOperations];
-  
-  // enumerate all the files in the path
-  NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtURL:self.searchUrl includingPropertiesForKeys:@[] options:0 errorHandler:nil];
-  
   __block NSBlockOperation *updateSearchPathsBlock = [NSBlockOperation blockOperationWithBlock:^{
     
     dispatch_async(dispatch_get_main_queue(), ^{
       [self.findController beginAddingFindResults];
     });
     
-    for (NSURL *fileURL in enumerator) {
-      if (updateSearchPathsBlock.isCancelled)
-        return;
-      
-      if ([fileURL.pathExtension isEqualToString:@"app"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [self.findController addFindResult:@{@"name":fileURL.lastPathComponent.stringByDeletingPathExtension, @"url":fileURL, @"icon":[[NSWorkspace sharedWorkspace] iconForFile:fileURL.path]}];
-        });
+    for (NSURL *searchUrl in self.searchUrls) {
+      @autoreleasepool {
+        
+        if (![[NSFileManager defaultManager] fileExistsAtPath:searchUrl.path])
+          continue;
+        
+        NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtURL:searchUrl includingPropertiesForKeys:@[] options:0 errorHandler:nil];
+        
+        for (NSURL *fileURL in enumerator) {
+          @autoreleasepool {
+            if (updateSearchPathsBlock.isCancelled)
+              return;
+            
+            if ([fileURL.pathExtension isEqualToString:@"app"]) {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                [self.findController addFindResult:@{@"name":fileURL.lastPathComponent.stringByDeletingPathExtension, @"url":fileURL, @"icon":[[NSWorkspace sharedWorkspace] iconForFile:fileURL.path]}];
+              });
+              
+              [enumerator skipDescendents];
+            }
+          }
+        }
       }
     }
     
