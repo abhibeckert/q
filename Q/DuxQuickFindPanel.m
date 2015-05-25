@@ -15,6 +15,8 @@
   if (!(self = [super initWithContentRect:contentRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:YES]))
     return nil;
   
+  self.level = kCGPopUpMenuWindowLevelKey;
+  
   return self;
 }
 
