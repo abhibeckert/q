@@ -123,8 +123,16 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
 - (void)openFindResult:(DuxQuickFindPanelController *)sender
 {
   NSDictionary *result = [sender selectedResult];
+  NSURL *url = result[@"url"];
   
-  [[NSWorkspace sharedWorkspace] openURL:result[@"url"]];
+  if ([NSApp currentEvent].modifierFlags & NSCommandKeyMask) {
+    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[url]];
+  } else {
+    [[NSWorkspace sharedWorkspace] openURL:url];
+  }
+  return;
+  
+  
 }
 
 @end
