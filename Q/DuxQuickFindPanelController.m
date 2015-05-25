@@ -17,6 +17,7 @@
 @property NSTableView *resultsView;
 @property (nonatomic) NSMutableArray *contents;
 @property (nonatomic) NSMutableArray *oldContents;
+@property (nonatomic) id scriptResult;
 
 @property NSDate *lastReload;
 
@@ -102,14 +103,27 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-  if (!self.matchingResultIndexes)
-    return self.contents.count + self.oldContents.count;
+  NSUInteger scriptResult = self.scriptResult ? 1 : 0;
   
-  return self.matchingResultIndexes.count;
+  if (!self.matchingResultIndexes)
+    return scriptResult + self.contents.count + self.oldContents.count;
+  
+  return scriptResult + self.matchingResultIndexes.count;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
+  if (self.scriptResult) {
+    if (row == 0) {
+      if ([tableColumn.identifier isEqualToString:@"icon"]) {
+        return [NSApp applicationIconImage];
+      } else {
+        return self.scriptResult;
+      }
+    }
+    row--;
+  }
+  
   if (!self.matchingResultIndexes) {
     if (self.contents.count > row)
       return self.contents[row][tableColumn.identifier];
@@ -127,7 +141,39 @@
 
 - (void)controlTextDidChange:(NSNotification *)obj
 {
+  [self evaluateJavaScript];
   [self reload];
+}
+
+- (void)evaluateJavaScript
+{
+  JSContext *jsContext = [[JSContext alloc] initWithVirtualMachine:[[JSVirtualMachine alloc] init]];
+  JSStringRef jsString = JSStringCreateWithUTF8CString([self.searchField.stringValue cStringUsingEncoding:NSUTF8StringEncoding]);
+  
+  bool success = JSCheckScriptSyntax(jsContext.JSGlobalContextRef, jsString, NULL, 0, NULL);
+  
+  if (!success) {
+    self.scriptResult = nil;
+  }
+  
+  JSValueRef jsValue = JSEvaluateScript(jsContext.JSGlobalContextRef, jsString, NULL, NULL, 0, NULL);
+  
+  if (JSValueIsUndefined(jsContext.JSGlobalContextRef, jsValue)) {
+    self.scriptResult = nil;
+  } else if (JSValueIsNull(jsContext.JSGlobalContextRef, jsValue)) {
+    self.scriptResult = nil;
+  } else {
+    JSStringRef resultJsString = JSValueToStringCopy(jsContext.JSGlobalContextRef, jsValue, NULL);
+    size_t bufferSize = JSStringGetMaximumUTF8CStringSize(resultJsString);
+    char buffer[bufferSize];
+    JSStringGetUTF8CString(resultJsString, buffer, bufferSize);
+    NSString *resultString = [NSString stringWithUTF8String:buffer];
+    JSStringRelease(resultJsString);
+    
+    self.scriptResult = resultString;
+  }
+  
+  JSStringRelease(jsString);
 }
 
 - (void)reload
@@ -188,7 +234,7 @@
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector
 {
   if (control == self.searchField) {
-    if (commandSelector == @selector(insertNewline:)) {
+    if (commandSelector == @selector(insertNewline:) || [NSApp currentEvent].keyCode == 36/*return*/) {
       if ([self numberOfRowsInTableView:self.resultsView] > 0) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
@@ -239,6 +285,12 @@
     return nil;
   
   NSInteger row = [self.resultsView selectedRow];
+  if (self.scriptResult) {
+    if (row == 0)
+      return nil;
+    
+    row--;
+  }
   if (row < 0)
     row = 0;
   
