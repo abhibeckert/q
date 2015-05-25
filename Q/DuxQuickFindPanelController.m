@@ -16,7 +16,7 @@
 @property NSSearchField *searchField;
 @property NSTableView *resultsView;
 @property (nonatomic) NSMutableArray *contents;
-@property (nonatomic) NSMutableArray *oldContents;
+@property (nonatomic) NSMutableArray *oldContentsUrls;
 @property (nonatomic) id expressionResult;
 
 @property NSDate *lastReload;
@@ -106,7 +106,7 @@
   NSUInteger expressionResult = self.expressionResult ? 1 : 0;
   
   if (!self.matchingResultIndexes)
-    return expressionResult + self.contents.count + self.oldContents.count;
+    return expressionResult + self.contents.count;
   
   return expressionResult + self.matchingResultIndexes.count;
 }
@@ -125,18 +125,12 @@
   }
   
   if (!self.matchingResultIndexes) {
-    if (self.contents.count > row)
-      return self.contents[row][tableColumn.identifier];
-    else
-      return self.oldContents[row - self.contents.count][tableColumn.identifier];
+    return self.contents[row][tableColumn.identifier];
   }
   
   row = [self.matchingResultIndexes[row] integerValue];
   
-  if (self.contents.count > row)
-    return self.contents[row][tableColumn.identifier];
-  else
-    return self.oldContents[row - self.contents.count][tableColumn.identifier];
+  return self.contents[row][tableColumn.identifier];
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj
@@ -163,7 +157,7 @@
   if (self.searchField.stringValue.length == 0) {
     self.matchingResultIndexes = nil;
     [self.resultsView reloadData];
-    if ((self.contents.count + self.oldContents.count) > 0)
+    if (self.contents.count > 0)
       [self.resultsView selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
     
     return;
@@ -185,9 +179,9 @@
   
   // perform the search
   self.matchingResultIndexes = @[].mutableCopy;
-  NSInteger contentsCount = self.contents.count + self.oldContents.count;
+  NSInteger contentsCount = self.contents.count;
   for (NSUInteger index = 0; index < contentsCount; index++) {
-    NSString *name = index < self.contents.count ? self.contents[index][@"name"] : self.oldContents[index - self.contents.count][@"name"];
+    NSString *name = self.contents[index][@"name"];
     
     if ([expression rangeOfFirstMatchInString:name options:0 range:NSMakeRange(0, name.length)].location == NSNotFound)
       continue;
@@ -275,24 +269,31 @@
     row = 0;
   
   if (!self.matchingResultIndexes)
-    return row < self.contents.count ? self.contents[row] : self.oldContents[row - self.contents.count];
+    return self.contents[row];
   
   row = [self.matchingResultIndexes[row] integerValue];
-  return row < self.contents.count ? self.contents[row] : self.oldContents[row - self.contents.count];
+  return self.contents[row];
 }
 
 - (void)beginAddingFindResults
 {
-  self.oldContents = self.contents.mutableCopy;
-  self.contents = @[].mutableCopy;
+  if (!self.contents) {
+    self.contents = [NSMutableArray array];
+  }
+  self.oldContentsUrls = [[self.contents valueForKey:@"url"] mutableCopy];
 }
 
 - (void)addFindResult:(NSDictionary *)resultRecord
 {
-  if ([self.oldContents containsObject:resultRecord]) {
-    [self.oldContents removeObject:resultRecord];
+  // check if contents already has this url
+  NSURL *url = resultRecord[@"url"];
+  if ([self.oldContentsUrls containsObject:url]) {
+    [self.oldContentsUrls removeObject:resultRecord[@"url"]];
+    return;
   }
   
+  
+  // insert new item
   NSUInteger index = [self.contents indexOfObject:resultRecord inSortedRange:NSMakeRange(0, self.contents.count) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(NSDictionary *leftObj, NSDictionary *rightObj) {
     NSString *leftName = leftObj[@"name"];
     NSUInteger leftLength = leftName.length;
@@ -316,7 +317,20 @@
 
 - (void)endAddingFindResults
 {
-  self.oldContents = nil;
+  // delete all urls that weren't found in the new search
+  for (NSURL *url in self.oldContentsUrls) {
+    NSInteger removeIndex = [self.contents indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+      return [[obj valueForKey:@"url"] isEqual:url];
+    }];
+    
+    
+    if (removeIndex == NSNotFound)
+      continue;
+    
+    [self.contents removeObjectAtIndex:removeIndex];
+  }
+  self.oldContentsUrls = nil;
+  
   [self reload];
 }
 

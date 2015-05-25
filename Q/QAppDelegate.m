@@ -67,13 +67,16 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
 {
   self.findController.target = self;
   self.findController.action = @selector(openFindResult:);
-  
-  [self updateSearchResults];
 }
 
 - (void)showPanel
 {
-//  [self updateSearchResults]; // we kind of suck while updating, so don't do it everytime we show the panel
+  // update if we haven't in the last few seconds
+  static NSDate *lastUpdate = nil;
+  if (!lastUpdate || lastUpdate.timeIntervalSinceNow < -3) {
+    [self updateSearchResults]; // we kind of suck while updating, so don't do it everytime we show the panel
+    lastUpdate = [NSDate date];
+  }
   
   [self.findController orderFront];
 }
