@@ -2,8 +2,8 @@ Q is an a perfectly designed gadget [mac app] to perform mission critical tasks 
 
 Once open, Q can be activated by pressing control-q.
 
-<img src="https://github.com/abhibeckert/q/raw/master/screenshot.png" srcset="https://github.com/abhibeckert/q/raw/master/screenshot-2x.png 2x" style="max-width:100%;">
+<img src="screenshot.png" srcset="screenshot-2x.png 2x">
 
 You can also enter math:
 
-<img src="https://github.com/abhibeckert/q/raw/master/screenshot-math.png" srcset="https://github.com/abhibeckert/q/raw/master/screenshot-math-2x.png 2x" style="max-width:100%;">
+<img src="screenshot-math.png" srcset="screenshot-math-2x.png 2x" style="max-width:100%;">
