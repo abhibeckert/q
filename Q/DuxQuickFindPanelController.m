@@ -13,7 +13,7 @@
 @interface DuxQuickFindPanelController()
 
 @property DuxQuickFindPanel *panel;
-@property NSSearchField *searchField;
+@property NSTextField *searchField;
 @property NSTableView *resultsView;
 @property (nonatomic) NSMutableArray *contents;
 @property (nonatomic) NSMutableArray *oldContentsUrls;
@@ -32,19 +32,23 @@
   if (!(self = [super init]))
     return nil;
   
-  self.panel = [[DuxQuickFindPanel alloc] initWithContentRect:NSMakeRect(0, 0, 450, 550)];
+  self.panel = [[DuxQuickFindPanel alloc] initWithContentRect:NSMakeRect(0, 0, 450, 240)];
+  self.panel.backgroundColor = [NSColor whiteColor];
   
-  self.searchField = [[NSSearchField alloc] initWithFrame:NSMakeRect(4, self.panel.frame.size.height - 32, self.panel.frame.size.width - 8, 28)];
+  self.searchField = [[NSTextField alloc] initWithFrame:NSMakeRect(8, self.panel.frame.size.height - 31, self.panel.frame.size.width - 16, 22)];
   [self.searchField.cell setPlaceholderString:@"What did you expect, an exploding pen?"];
-  self.searchField.bezelStyle = NSTextFieldSquareBezel;
-  self.searchField.font = [NSFont systemFontOfSize:17];
+//  self.searchField.bezelStyle = NSTextFieldSquareBezel;
+  self.searchField.bordered = NO;
+  self.searchField.focusRingType = NSFocusRingTypeNone;
+  self.searchField.font = [NSFont systemFontOfSize:18];
   self.searchField.delegate = self;
+  self.searchField.backgroundColor = [NSColor clearColor];
   [self.panel.contentView addSubview:self.searchField];
   
   self.resultsView = [[NSTableView alloc] initWithFrame:NSMakeRect(0, 0, 100, 100)];
   self.resultsView.headerView = nil;
   self.resultsView.backgroundColor = [NSColor clearColor];
-  self.resultsView.usesAlternatingRowBackgroundColors = YES;
+  self.resultsView.usesAlternatingRowBackgroundColors = NO;
   self.resultsView.rowHeight = 42;
   self.resultsView.dataSource = self;
   self.resultsView.delegate = self;
@@ -61,7 +65,7 @@
   [column.dataCell setFont:[NSFont fontWithName:@"Helvetica Neue Light" size:32]];
   [self.resultsView addTableColumn:column];
   
-  NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, self.panel.frame.size.width, self.panel.frame.size.height - 36)];
+  NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, self.panel.frame.size.width, self.panel.frame.size.height - 40)];
   scrollView.backgroundColor = self.panel.backgroundColor;
   scrollView.hasVerticalScroller = YES;
   scrollView.documentView = self.resultsView;
@@ -93,7 +97,7 @@
   NSRect screenFrame = [[NSScreen mainScreen] frame];
   
   CGFloat x = floor(screenFrame.origin.x + ((screenFrame.size.width - self.panel.frame.size.width) / 2));
-  CGFloat y = floor(screenFrame.origin.y + ((screenFrame.size.height - self.panel.frame.size.height) / 1.25));
+  CGFloat y = floor(screenFrame.origin.y + ((screenFrame.size.height - self.panel.frame.size.height) / 1.5));
   
   [self.panel setFrame:NSMakeRect(x, y, self.panel.frame.size.width, self.panel.frame.size.height) display:NO];
   
