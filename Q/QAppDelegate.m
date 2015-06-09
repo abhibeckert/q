@@ -14,6 +14,7 @@
 
 @property (strong) NSOperationQueue *updateSearchPathsQueue;
 @property (strong) NSArray *searchUrls;
+@property (strong) NSArray *searchExtensions;
 
 - (void)showPanel;
 
@@ -42,7 +43,13 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   
   self.searchUrls = @[[NSURL fileURLWithPath:@"/Applications"],
                       [NSURL fileURLWithPath:@"/Applications/Xcode.app/Contents/Applications/"],
-                      [NSURL fileURLWithPath:@"~/Applications".stringByStandardizingPath]];
+                      [NSURL fileURLWithPath:@"~/Applications".stringByStandardizingPath],
+                      [NSURL fileURLWithPath:@"/Library/PreferencePanes"],
+                      [NSURL fileURLWithPath:@"~/Library/PreferencePanes".stringByStandardizingPath],
+                      [NSURL fileURLWithPath:@"/System/Library/PreferencePanes"]];
+  
+  self.searchExtensions = @[@"app",
+                            @"prefPane"];
   
   // init hot key
   //handler
@@ -104,7 +111,7 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
             if (updateSearchPathsBlock.isCancelled)
               return;
             
-            if ([fileURL.pathExtension isEqualToString:@"app"]) {
+            if ([self.searchExtensions containsObject:fileURL.pathExtension]) {
               dispatch_async(dispatch_get_main_queue(), ^{
                 [self.findController addFindResult:@{@"name":fileURL.lastPathComponent.stringByDeletingPathExtension, @"url":fileURL, @"icon":[[NSWorkspace sharedWorkspace] iconForFile:fileURL.path]}];
               });
