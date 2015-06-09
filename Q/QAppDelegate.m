@@ -127,6 +127,9 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
             if (!name || name.length == 0) {
               name = fileURL.lastPathComponent.stringByDeletingPathExtension;
             }
+            if ([fileURL.pathExtension isEqualToString:@"prefPane"]) {
+              name = [name stringByAppendingString:@" Pref Pane"];
+            }
             
             NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:fileURL.path];
             
