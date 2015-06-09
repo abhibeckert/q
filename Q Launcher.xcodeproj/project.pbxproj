@@ -34,23 +34,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3827220C184417A4004A78D4 /* Q.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Q.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3827220C184417A4004A78D4 /* Q Launcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Q Launcher.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3827220F184417A4004A78D4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		38272212184417A4004A78D4 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		38272213184417A4004A78D4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		38272214184417A4004A78D4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		38272217184417A4004A78D4 /* Q-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Q-Info.plist"; sourceTree = "<group>"; };
+		38272217184417A4004A78D4 /* Q Launcher-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Q Launcher-Info.plist"; sourceTree = "<group>"; };
 		38272219184417A4004A78D4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3827221B184417A4004A78D4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3827221D184417A4004A78D4 /* Q-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Q-Prefix.pch"; sourceTree = "<group>"; };
+		3827221D184417A4004A78D4 /* Q Launcher-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Q Launcher-Prefix.pch"; sourceTree = "<group>"; };
 		3827221F184417A4004A78D4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		38272221184417A4004A78D4 /* QAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAppDelegate.h; sourceTree = "<group>"; };
 		38272222184417A4004A78D4 /* QAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAppDelegate.m; sourceTree = "<group>"; };
 		38272225184417A4004A78D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		38272227184417A4004A78D4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3827222D184417A4004A78D4 /* QTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3827222D184417A4004A78D4 /* Q LauncherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Q LauncherTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3827222E184417A4004A78D4 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		38272235184417A4004A78D4 /* QTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QTests-Info.plist"; sourceTree = "<group>"; };
+		38272235184417A4004A78D4 /* Q LauncherTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Q LauncherTests-Info.plist"; sourceTree = "<group>"; };
 		38272237184417A4004A78D4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		38272239184417A4004A78D4 /* QTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QTests.m; sourceTree = "<group>"; };
 		38272244184417E2004A78D4 /* DuxQuickFindPanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DuxQuickFindPanelController.h; sourceTree = "<group>"; };
@@ -95,8 +95,8 @@
 		3827220D184417A4004A78D4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3827220C184417A4004A78D4 /* Q.app */,
-				3827222D184417A4004A78D4 /* QTests.xctest */,
+				3827220C184417A4004A78D4 /* Q Launcher.app */,
+				3827222D184417A4004A78D4 /* Q LauncherTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -141,10 +141,10 @@
 		38272216184417A4004A78D4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				38272217184417A4004A78D4 /* Q-Info.plist */,
+				38272217184417A4004A78D4 /* Q Launcher-Info.plist */,
 				38272218184417A4004A78D4 /* InfoPlist.strings */,
 				3827221B184417A4004A78D4 /* main.m */,
-				3827221D184417A4004A78D4 /* Q-Prefix.pch */,
+				3827221D184417A4004A78D4 /* Q Launcher-Prefix.pch */,
 				3827221E184417A4004A78D4 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
@@ -162,7 +162,7 @@
 		38272234184417A4004A78D4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				38272235184417A4004A78D4 /* QTests-Info.plist */,
+				38272235184417A4004A78D4 /* Q LauncherTests-Info.plist */,
 				38272236184417A4004A78D4 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -171,9 +171,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3827220B184417A4004A78D4 /* Q */ = {
+		3827220B184417A4004A78D4 /* Q Launcher */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3827223D184417A4004A78D4 /* Build configuration list for PBXNativeTarget "Q" */;
+			buildConfigurationList = 3827223D184417A4004A78D4 /* Build configuration list for PBXNativeTarget "Q Launcher" */;
 			buildPhases = (
 				38272208184417A4004A78D4 /* Sources */,
 				38272209184417A4004A78D4 /* Frameworks */,
@@ -183,14 +183,14 @@
 			);
 			dependencies = (
 			);
-			name = Q;
+			name = "Q Launcher";
 			productName = Q;
-			productReference = 3827220C184417A4004A78D4 /* Q.app */;
+			productReference = 3827220C184417A4004A78D4 /* Q Launcher.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3827222C184417A4004A78D4 /* QTests */ = {
+		3827222C184417A4004A78D4 /* Q LauncherTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 38272240184417A4004A78D4 /* Build configuration list for PBXNativeTarget "QTests" */;
+			buildConfigurationList = 38272240184417A4004A78D4 /* Build configuration list for PBXNativeTarget "Q LauncherTests" */;
 			buildPhases = (
 				38272229184417A4004A78D4 /* Sources */,
 				3827222A184417A4004A78D4 /* Frameworks */,
@@ -201,9 +201,9 @@
 			dependencies = (
 				38272232184417A4004A78D4 /* PBXTargetDependency */,
 			);
-			name = QTests;
+			name = "Q LauncherTests";
 			productName = QTests;
-			productReference = 3827222D184417A4004A78D4 /* QTests.xctest */;
+			productReference = 3827222D184417A4004A78D4 /* Q LauncherTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -221,7 +221,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 38272207184417A4004A78D4 /* Build configuration list for PBXProject "Q" */;
+			buildConfigurationList = 38272207184417A4004A78D4 /* Build configuration list for PBXProject "Q Launcher" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -234,8 +234,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3827220B184417A4004A78D4 /* Q */,
-				3827222C184417A4004A78D4 /* QTests */,
+				3827220B184417A4004A78D4 /* Q Launcher */,
+				3827222C184417A4004A78D4 /* Q LauncherTests */,
 			);
 		};
 /* End PBXProject section */
@@ -287,7 +287,7 @@
 /* Begin PBXTargetDependency section */
 		38272232184417A4004A78D4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3827220B184417A4004A78D4 /* Q */;
+			target = 3827220B184417A4004A78D4 /* Q Launcher */;
 			targetProxy = 38272231184417A4004A78D4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -402,9 +402,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Q/Q-Prefix.pch";
-				INFOPLIST_FILE = "Q/Q-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Q/Q Launcher-Prefix.pch";
+				INFOPLIST_FILE = "Q/Q Launcher-Info.plist";
+				PRODUCT_NAME = "Q Launcher";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -415,9 +415,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Q/Q-Prefix.pch";
-				INFOPLIST_FILE = "Q/Q-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Q/Q Launcher-Prefix.pch";
+				INFOPLIST_FILE = "Q/Q Launcher-Info.plist";
+				PRODUCT_NAME = "Q Launcher";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -437,8 +437,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "QTests/QTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "QTests/Q LauncherTests-Info.plist";
+				PRODUCT_NAME = "Q LauncherTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -455,8 +455,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Q/Q-Prefix.pch";
-				INFOPLIST_FILE = "QTests/QTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "QTests/Q LauncherTests-Info.plist";
+				PRODUCT_NAME = "Q LauncherTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -465,7 +465,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		38272207184417A4004A78D4 /* Build configuration list for PBXProject "Q" */ = {
+		38272207184417A4004A78D4 /* Build configuration list for PBXProject "Q Launcher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3827223B184417A4004A78D4 /* Debug */,
@@ -474,21 +474,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3827223D184417A4004A78D4 /* Build configuration list for PBXNativeTarget "Q" */ = {
+		3827223D184417A4004A78D4 /* Build configuration list for PBXNativeTarget "Q Launcher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3827223E184417A4004A78D4 /* Debug */,
 				3827223F184417A4004A78D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		38272240184417A4004A78D4 /* Build configuration list for PBXNativeTarget "QTests" */ = {
+		38272240184417A4004A78D4 /* Build configuration list for PBXNativeTarget "Q LauncherTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				38272241184417A4004A78D4 /* Debug */,
 				38272242184417A4004A78D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
