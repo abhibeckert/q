@@ -67,6 +67,11 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   keyID.id = 1;
   RegisterEventHotKey(keyCode,controlKey,keyID,GetApplicationEventTarget(),0,&theRef);
   
+  // wait a long time after launch, then generate our index (we don't want to slow down user login but we would like to be ready by the time the user uses our app)
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(90 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [self updateSearchResults];
+  });
+  
   return self;
 }
 
@@ -111,13 +116,25 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
             if (updateSearchPathsBlock.isCancelled)
               return;
             
-            if ([self.searchExtensions containsObject:fileURL.pathExtension]) {
-              dispatch_async(dispatch_get_main_queue(), ^{
-                [self.findController addFindResult:@{@"name":fileURL.lastPathComponent.stringByDeletingPathExtension, @"url":fileURL, @"icon":[[NSWorkspace sharedWorkspace] iconForFile:fileURL.path]}];
-              });
-              
-              [enumerator skipDescendents];
+            if (![self.searchExtensions containsObject:fileURL.pathExtension])
+              continue;
+            
+            NSDictionary *bundleInfo = [[NSBundle bundleWithURL:fileURL] localizedInfoDictionary];
+            NSString *name = [bundleInfo valueForKey:@"CFBundleDisplayName"];
+            if (!name) {
+              name = [bundleInfo valueForKey:@"CFBundleName"];
             }
+            if (!name || name.length == 0) {
+              name = fileURL.lastPathComponent.stringByDeletingPathExtension;
+            }
+            
+            NSImage *icon = [[NSWorkspace sharedWorkspace] iconForFile:fileURL.path];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+              [self.findController addFindResult:@{@"name":name, @"url":fileURL, @"icon":icon}];
+            });
+            
+            [enumerator skipDescendents];
           }
         }
       }
