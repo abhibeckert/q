@@ -38,6 +38,11 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   if (![super init])
     return nil;
   
+  // register default preferences
+  [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"showDockIcon": [NSNumber numberWithBool:YES],
+                                                            @"openAtLogin": [NSNumber numberWithBool:NO],
+                                                            @"hotkey": @"^Q"}];
+  
   self.updateSearchPathsQueue = [[NSOperationQueue alloc] init];
   self.updateSearchPathsQueue.maxConcurrentOperationCount = 1;
   
@@ -71,10 +76,6 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(90 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     [self updateSearchResults];
   });
-  
-  // register default preferences
-  [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"showDockIcon": [NSNumber numberWithBool:YES],
-                                                            @"openAtLogin": [NSNumber numberWithBool:NO]}];
   
   // show the dock icon?
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"showDockIcon"]) {
