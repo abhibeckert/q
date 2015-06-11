@@ -13,8 +13,7 @@
 @interface QAppDelegate()
 
 @property (strong) NSOperationQueue *updateSearchPathsQueue;
-@property (strong) NSArray *searchUrls;
-@property (strong) NSArray *searchExtensions;
+@property NSDictionary *searchMap;
 
 - (void)showPanel;
 
@@ -39,22 +38,24 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
     return nil;
   
   // register default preferences
-  [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"showDockIcon": [NSNumber numberWithBool:YES],
-                                                            @"openAtLogin": [NSNumber numberWithBool:NO],
-                                                            @"hotkey": @"^Q"}];
+  NSDictionary *defaults = @{@"showDockIcon": [NSNumber numberWithBool:YES],
+                             @"openAtLogin": [NSNumber numberWithBool:NO],
+                             @"hotkey": @"^Q",
+                             @"sortOverrides": @{},
+                             @"searchMap": @[
+                                 @{@"path": @"/Applications", @"extensions": @"app"},
+                                 @{@"path": @"/Applications/Xcode.app/Contents/Applications/", @"extensions": @"app"},
+                                 @{@"path": @"~/Applications".stringByStandardizingPath, @"extensions": @"app"},
+                                 @{@"path": @"/Library/PreferencePanes", @"extensions": @"prefPane"},
+                                 @{@"path": @"~/Library/PreferencePanes".stringByStandardizingPath, @"extensions": @"prefPane"},
+                                 @{@"path": @"/System/Library/PreferencePanes", @"extensions": @"prefPane"},
+                                 ]};
+  [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
   
   self.updateSearchPathsQueue = [[NSOperationQueue alloc] init];
   self.updateSearchPathsQueue.maxConcurrentOperationCount = 1;
   
-  self.searchUrls = @[[NSURL fileURLWithPath:@"/Applications"],
-                      [NSURL fileURLWithPath:@"/Applications/Xcode.app/Contents/Applications/"],
-                      [NSURL fileURLWithPath:@"~/Applications".stringByStandardizingPath],
-                      [NSURL fileURLWithPath:@"/Library/PreferencePanes"],
-                      [NSURL fileURLWithPath:@"~/Library/PreferencePanes".stringByStandardizingPath],
-                      [NSURL fileURLWithPath:@"/System/Library/PreferencePanes"]];
-  
-  self.searchExtensions = @[@"app",
-                            @"prefPane"];
+  self.searchMap = [defaults objectForKey:@"searchMap"];
   
   // init hot key
   //handler
@@ -119,8 +120,10 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
       [self.findController beginAddingFindResults];
     });
     
-    for (NSURL *searchUrl in self.searchUrls) {
+    for (NSDictionary *mapRecord in self.searchMap) {
       @autoreleasepool {
+        NSURL *searchUrl = [NSURL URLWithString:mapRecord[@"path"]];
+        NSArray *searchExtensions = [mapRecord[@"extensions"] componentsSeparatedByString:@","];
         
         if (![[NSFileManager defaultManager] fileExistsAtPath:searchUrl.path])
           continue;
@@ -132,7 +135,7 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
             if (updateSearchPathsBlock.isCancelled)
               return;
             
-            if (![self.searchExtensions containsObject:fileURL.pathExtension])
+            if (![searchExtensions containsObject:fileURL.pathExtension])
               continue;
             
             NSDictionary *bundleInfo = [[NSBundle bundleWithURL:fileURL] localizedInfoDictionary];
