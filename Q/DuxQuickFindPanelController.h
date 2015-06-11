@@ -21,8 +21,9 @@
 // the user's currently selected seacrh result
 @property (readonly) id selectedResult;
 
-// show the panel
+// show/hide the panel
 - (void)orderFront;
+- (void)orderOut;
 
 /**
  * The find panel assumes you will have a background therad searching for results. To do it, you must:

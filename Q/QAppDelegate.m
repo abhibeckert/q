@@ -183,6 +183,7 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
 
 - (IBAction)showPreferences:(id)sender
 {
+  [self.findController orderOut];
   [self.preferencesWindow makeKeyAndOrderFront:self];
 }
 

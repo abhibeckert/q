@@ -119,6 +119,11 @@
   [self.panel makeFirstResponder:self.searchField];
 }
 
+- (void)orderOut
+{
+  [self.panel orderOut:self];
+}
+
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
   NSUInteger expressionResult = self.expressionResult ? 1 : 0;
