@@ -72,6 +72,21 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
     [self updateSearchResults];
   });
   
+  // register default preferences
+  [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"showDockIcon": [NSNumber numberWithBool:YES],
+                                                            @"openAtLogin": [NSNumber numberWithBool:NO]}];
+  
+  // show the dock icon?
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"showDockIcon"]) {
+    ProcessSerialNumber psn = { 0, kCurrentProcess };
+    TransformProcessType(&psn, kProcessTransformToForegroundApplication);
+  }
+  
+//  // open at login? http://blog.timschroeder.net/2012/07/03/the-launch-at-login-sandbox-project/
+//  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"openAtLogin"]) {
+//    NSLog(@"Open at login not yet implemented");
+//  }
+  
   return self;
 }
 
@@ -164,6 +179,11 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   return;
   
   
+}
+
+- (IBAction)showPreferences:(id)sender
+{
+  [self.preferencesWindow makeKeyAndOrderFront:self];
 }
 
 @end

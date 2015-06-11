@@ -13,5 +13,8 @@
 @interface QAppDelegate : NSObject <NSApplicationDelegate>
 
 @property (strong) IBOutlet DuxQuickFindPanelController *findController;
+@property (strong) IBOutlet NSWindow *preferencesWindow;
+
+- (IBAction)showPreferences:(id)sender;
 
 @end

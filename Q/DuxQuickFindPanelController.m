@@ -8,16 +8,19 @@
 
 #import "DuxQuickFindPanelController.h"
 #import <objc/message.h>
-
+#import "QAppDelegate.h"
 
 @interface DuxQuickFindPanelController()
 
 @property DuxQuickFindPanel *panel;
 @property NSTextField *searchField;
 @property NSTableView *resultsView;
+@property NSPopUpButton *menuButton;
+
 @property (nonatomic) NSMutableArray *contents;
 @property (nonatomic) NSMutableArray *oldContentsUrls;
 @property (nonatomic) id expressionResult;
+
 
 @property NSDate *lastReload;
 
@@ -32,12 +35,14 @@
   if (!(self = [super init]))
     return nil;
   
+  // create panel
   self.panel = [[DuxQuickFindPanel alloc] initWithContentRect:NSMakeRect(0, 0, 450, 240)];
   self.panel.backgroundColor = [NSColor whiteColor];
   
+  
+  // create search field
   self.searchField = [[NSTextField alloc] initWithFrame:NSMakeRect(8, self.panel.frame.size.height - 31, self.panel.frame.size.width - 16, 22)];
   [self.searchField.cell setPlaceholderString:@"What did you expect, an exploding pen?"];
-//  self.searchField.bezelStyle = NSTextFieldSquareBezel;
   self.searchField.bordered = NO;
   self.searchField.focusRingType = NSFocusRingTypeNone;
   self.searchField.font = [NSFont systemFontOfSize:18];
@@ -45,6 +50,15 @@
   self.searchField.backgroundColor = [NSColor clearColor];
   [self.panel.contentView addSubview:self.searchField];
   
+  // create menu
+  self.menuButton = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(self.panel.frame.size.width - 30, self.panel.frame.size.height - 33, 25, 25) pullsDown:NO];
+  [self.menuButton.menu addItemWithTitle:@"Preferences..." action:@selector(showPreferences:) keyEquivalent:@","];
+  [self.menuButton.menu addItem:[NSMenuItem separatorItem]];
+  [self.menuButton.menu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@"q"];
+  [self.menuButton selectItem:nil];
+  [self.panel.contentView addSubview:self.menuButton];
+  
+  // create search results view
   self.resultsView = [[NSTableView alloc] initWithFrame:NSMakeRect(0, 0, 100, 100)];
   self.resultsView.headerView = nil;
   self.resultsView.backgroundColor = [NSColor clearColor];

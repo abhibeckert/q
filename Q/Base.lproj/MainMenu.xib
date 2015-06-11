@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
@@ -25,7 +26,11 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
+                            <menuItem title="Preferences…" keyEquivalent="," id="129">
+                                <connections>
+                                    <action selector="showPreferences:" target="-1" id="hhe-5E-kQV"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -54,7 +59,7 @@
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Q Launcheruit Q Launcher" keyEquivalent="q" id="136">
+                            <menuItem title="Quit Q Launcher" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-3" id="449"/>
                                 </connections>
@@ -649,9 +654,43 @@
         <customObject id="494" customClass="QAppDelegate">
             <connections>
                 <outlet property="findController" destination="Q3K-c1-sSL" id="JTA-JN-p3l"/>
+                <outlet property="preferencesWindow" destination="os8-0j-Xdn" id="Xdr-r9-7Os"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
         <customObject id="Q3K-c1-sSL" customClass="DuxQuickFindPanelController"/>
+        <window title="Q Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="os8-0j-Xdn">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <rect key="contentRect" x="109" y="131" width="291" height="84"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" id="Che-o1-8Gn">
+                <rect key="frame" x="0.0" y="0.0" width="291" height="84"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6CV-Sh-lQr">
+                        <rect key="frame" x="18" y="48" width="240" height="18"/>
+                        <buttonCell key="cell" type="check" title="Show Dock Icon (requires relanuch)" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="fXD-T8-zGj">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="dpr-0n-7I9" name="value" keyPath="values.showDockIcon" id="ul6-06-JuX"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="txG-ih-ZCf">
+                        <rect key="frame" x="18" y="18" width="242" height="18"/>
+                        <buttonCell key="cell" type="check" title="Launch Automatically at Login (NYI)" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="oKa-db-nyh">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="dpr-0n-7I9" name="value" keyPath="values.openAtLogin" id="vtI-Al-eTB"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="172.5" y="320"/>
+        </window>
+        <userDefaultsController representsSharedInstance="YES" id="dpr-0n-7I9"/>
     </objects>
 </document>
