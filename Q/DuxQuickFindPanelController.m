@@ -21,6 +21,7 @@
 @property (nonatomic) NSMutableArray *oldContentsUrls;
 @property (nonatomic) id expressionResult;
 
+@property (nonatomic) NSDictionary *sortOverrides;
 
 @property NSDate *lastReload;
 
@@ -86,6 +87,10 @@
   [self.panel.contentView addSubview:scrollView];
   
   self.matchingResultIndexes = nil;
+  self.sortOverrides = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"sortOverrides"];
+  if (!self.sortOverrides) {
+    self.sortOverrides = @{};
+  }
   
   return self;
 }
@@ -176,6 +181,7 @@
 - (void)reload
 {
   self.lastReload = [NSDate date];
+  
   // no search string? show all possible items
   if (self.searchField.stringValue.length == 0) {
     self.matchingResultIndexes = nil;
@@ -201,14 +207,27 @@
   NSRegularExpression *expression = [NSRegularExpression regularExpressionWithPattern:searchPattern options:NSRegularExpressionCaseInsensitive error:NULL];
   
   // perform the search
+  // check for sort override
+  NSURL *overrideUrl = nil;
+  if ([self.sortOverrides objectForKey:self.searchField.stringValue]) {
+    overrideUrl = [NSURL URLWithString:[self.sortOverrides objectForKey:self.searchField.stringValue]];
+  }
+  
   self.matchingResultIndexes = @[].mutableCopy;
   NSInteger contentsCount = self.contents.count;
   for (NSUInteger index = 0; index < contentsCount; index++) {
     NSString *name = self.contents[index][@"name"];
     
+    
     if ([expression rangeOfFirstMatchInString:name options:0 range:NSMakeRange(0, name.length)].location == NSNotFound)
       continue;
     
+    if (overrideUrl) {
+      if ([overrideUrl isEqual:self.contents[index][@"url"]]) {
+        [self.matchingResultIndexes insertObject:[NSNumber numberWithInteger:index] atIndex:0];
+        continue;
+      }
+    }
     [self.matchingResultIndexes addObject:[NSNumber numberWithInteger:index]];
   }
   
@@ -220,10 +239,7 @@
 
 - (void)tableViewRowClicked:(id)sender
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-  [self.target performSelector:self.action withObject:self];
-#pragma clang diagnostic pop
+  [self openSelectedResult];
   
   [self.panel orderOut:self];
 }
@@ -233,10 +249,7 @@
   if (control == self.searchField) {
     if (commandSelector == @selector(insertNewline:) || [NSApp currentEvent].keyCode == 36/*return*/) {
       if ([self numberOfRowsInTableView:self.resultsView] > 0) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self.target performSelector:self.action withObject:self];
-#pragma clang diagnostic pop
+        [self openSelectedResult];
       }
       
       [self.panel orderOut:self];
@@ -274,6 +287,30 @@
   }
   
   return NO;
+}
+
+- (void)openSelectedResult
+{
+  NSInteger row = [self.resultsView selectedRow];
+  if (row > 0) {
+    NSMutableDictionary *overrides = self.sortOverrides.mutableCopy;
+    
+    NSString *searchTerm = self.searchField.stringValue;
+    NSURL *url = self.selectedResult[@"url"];
+    [overrides setObject:url.absoluteString forKey:searchTerm];
+    
+    self.sortOverrides = overrides.copy;
+    [[NSUserDefaults standardUserDefaults] setObject:self.sortOverrides forKey:@"sortOverrides"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      [self reload];
+    });
+  }
+  
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+  [self.target performSelector:self.action withObject:self];
+#pragma clang diagnostic pop
 }
 
 - (id)selectedResult
@@ -314,7 +351,6 @@
     [self.oldContentsUrls removeObject:resultRecord[@"url"]];
     return;
   }
-  
   
   // insert new item
   NSUInteger index = [self.contents indexOfObject:resultRecord inSortedRange:NSMakeRange(0, self.contents.count) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(NSDictionary *leftObj, NSDictionary *rightObj) {

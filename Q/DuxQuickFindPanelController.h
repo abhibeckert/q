@@ -18,7 +18,7 @@
 @property (assign) id target;
 @property SEL action;
 
-// the user's currently selected seacrh result
+// the user's currently selected search result
 @property (readonly) id selectedResult;
 
 // show/hide the panel
