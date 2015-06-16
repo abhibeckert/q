@@ -10,10 +10,13 @@
 #import "DuxQuickFindPanelController.h"
 #import "DuxQuickFindPanel.h"
 
+@class QHotKeyTextField;
+
 @interface QAppDelegate : NSObject <NSApplicationDelegate>
 
 @property (strong) IBOutlet DuxQuickFindPanelController *findController;
 @property (strong) IBOutlet NSWindow *preferencesWindow;
+@property (strong) IBOutlet QHotKeyTextField *preferencesHotkeyView;
 
 - (IBAction)showPreferences:(id)sender;
 

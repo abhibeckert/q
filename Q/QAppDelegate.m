@@ -7,13 +7,17 @@
 //
 
 #import "QAppDelegate.h"
-
+#import "Q_Launcher-Swift.h"
 #import <Carbon/Carbon.h>
+#import "QHotKey.h"
 
-@interface QAppDelegate()
+@interface QAppDelegate() <QHotKeyTextFieldDelegate> {
+  EventHotKeyRef hotkeyRef;
+}
 
 @property (strong) NSOperationQueue *updateSearchPathsQueue;
 @property NSDictionary *searchMap;
+@property QHotKey *hotkey;
 
 - (void)showPanel;
 
@@ -40,7 +44,7 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   // register default preferences
   NSDictionary *defaults = @{@"showDockIcon": [NSNumber numberWithBool:YES],
                              @"openAtLogin": [NSNumber numberWithBool:NO],
-                             @"hotkey": @"^Q",
+                             @"hotkey": @{@"modifiers": @[@"control"], @"keycode": @12}, // 12 is "q" in querty
                              @"sortOverrides": @{},
                              @"searchMap": @[
                                  @{@"path": @"/Applications", @"extensions": @"app"},
@@ -58,20 +62,35 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
   self.searchMap = [defaults objectForKey:@"searchMap"];
   
   // init hot key
+  self.hotkey = [[QHotKey alloc] initWithRecord:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"hotkey"]];
+  
   //handler
   hotKeyFunction = NewEventHandlerUPP(hotKeyHandler);
   EventTypeSpec eventType;
   eventType.eventClass = kEventClassKeyboard;
-  eventType.eventKind = kEventHotKeyReleased;
+  eventType.eventKind = kEventHotKeyPressed;
   InstallApplicationEventHandler(hotKeyFunction,1,&eventType, (__bridge void*)self,NULL);
   //hotkey
-//  UInt32 keyCode = 0x31; //space
-  UInt32 keyCode = 12; // q in qwerty
-  EventHotKeyRef theRef = NULL;
+  UInt32 keyCode = self.hotkey.keycode;
   EventHotKeyID keyID;
   keyID.signature = 'QApp';
   keyID.id = 1;
-  RegisterEventHotKey(keyCode,controlKey,keyID,GetApplicationEventTarget(),0,&theRef);
+  
+  UInt32 modifiers = 0;
+  if (self.hotkey.shiftModifier) {
+    modifiers |= shiftKey;
+  }
+  if (self.hotkey.controlModifier) {
+    modifiers |= controlKey;
+  }
+  if (self.hotkey.altModifier) {
+    modifiers |= optionKey;
+  }
+  if (self.hotkey.commandModifier) {
+    modifiers |= cmdKey;
+  }
+  
+  RegisterEventHotKey(keyCode,modifiers,keyID,GetApplicationEventTarget(),0,&hotkeyRef);
   
   // wait a long time after launch, then generate our index (we don't want to slow down user login but we would like to be ready by the time the user uses our app)
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(90 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -187,8 +206,54 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
 
 - (IBAction)showPreferences:(id)sender
 {
+  self.preferencesHotkeyView.hotkeyValue = [[QHotKey alloc] initWithRecord:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"hotkey"]];
+  self.preferencesHotkeyView.delegate = self;
+
+  
   [self.findController orderOut];
   [self.preferencesWindow makeKeyAndOrderFront:self];
+  
+
+  
+}
+
+- (void)hotKeyDidChange:(QHotKeyTextField * __nonnull)field newValue:(QHotKey * __nonnull)newValue
+{
+  self.hotkey = newValue;
+  
+  [[NSUserDefaults standardUserDefaults] setObject:self.hotkey.record forKey:@"hotkey"];
+  
+  UnregisterEventHotKey(hotkeyRef);
+  
+  
+  
+  //handler
+  hotKeyFunction = NewEventHandlerUPP(hotKeyHandler);
+  EventTypeSpec eventType;
+  eventType.eventClass = kEventClassKeyboard;
+  eventType.eventKind = kEventHotKeyPressed;
+  InstallApplicationEventHandler(hotKeyFunction,1,&eventType, (__bridge void*)self,NULL);
+  //hotkey
+  UInt32 keyCode = self.hotkey.keycode;
+  EventHotKeyID keyID;
+  keyID.signature = 'QApp';
+  keyID.id = 1;
+  
+  UInt32 modifiers = 0;
+  if (self.hotkey.shiftModifier) {
+    modifiers |= shiftKey;
+  }
+  if (self.hotkey.controlModifier) {
+    modifiers |= controlKey;
+  }
+  if (self.hotkey.altModifier) {
+    modifiers |= optionKey;
+  }
+  if (self.hotkey.commandModifier) {
+    modifiers |= cmdKey;
+  }
+  
+  RegisterEventHotKey(keyCode,modifiers,keyID,GetApplicationEventTarget(),0,&hotkeyRef);
 }
 
 @end

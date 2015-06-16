@@ -21,6 +21,8 @@
 		38272248184417E2004A78D4 /* DuxQuickFindPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38272245184417E2004A78D4 /* DuxQuickFindPanelController.m */; };
 		38272249184417E2004A78D4 /* DuxQuickFindPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38272247184417E2004A78D4 /* DuxQuickFindPanel.m */; };
 		3827224B18442562004A78D4 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3827224A18442562004A78D4 /* Carbon.framework */; };
+		384C906C1B2FAF5000208C0C /* QHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 384C906B1B2FAF5000208C0C /* QHotKey.m */; };
+		3856E7FC1B2A8337008D4387 /* QHotKeyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3856E7FB1B2A8337008D4387 /* QHotKeyTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,10 @@
 		38272246184417E2004A78D4 /* DuxQuickFindPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DuxQuickFindPanel.h; sourceTree = "<group>"; };
 		38272247184417E2004A78D4 /* DuxQuickFindPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DuxQuickFindPanel.m; sourceTree = "<group>"; };
 		3827224A18442562004A78D4 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		384C906A1B2FAF5000208C0C /* QHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QHotKey.h; sourceTree = "<group>"; };
+		384C906B1B2FAF5000208C0C /* QHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QHotKey.m; sourceTree = "<group>"; };
+		3856E7F81B2A830C008D4387 /* Q Launcher-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Q Launcher-Bridging-Header.h"; sourceTree = "<group>"; };
+		3856E7FB1B2A8337008D4387 /* QHotKeyTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QHotKeyTextField.swift; sourceTree = "<group>"; };
 		3870C22E1B2A4594001DEB60 /* Q Launcher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Q Launcher.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -134,7 +140,9 @@
 				38272245184417E2004A78D4 /* DuxQuickFindPanelController.m */,
 				38272246184417E2004A78D4 /* DuxQuickFindPanel.h */,
 				38272247184417E2004A78D4 /* DuxQuickFindPanel.m */,
-				38272227184417A4004A78D4 /* Images.xcassets */,
+				3856E7FB1B2A8337008D4387 /* QHotKeyTextField.swift */,
+				384C906A1B2FAF5000208C0C /* QHotKey.h */,
+				384C906B1B2FAF5000208C0C /* QHotKey.m */,
 				38272216184417A4004A78D4 /* Supporting Files */,
 			);
 			path = Q;
@@ -143,6 +151,8 @@
 		38272216184417A4004A78D4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				38272227184417A4004A78D4 /* Images.xcassets */,
+				3856E7F81B2A830C008D4387 /* Q Launcher-Bridging-Header.h */,
 				38272217184417A4004A78D4 /* Q Launcher-Info.plist */,
 				38272218184417A4004A78D4 /* InfoPlist.strings */,
 				3827221B184417A4004A78D4 /* main.m */,
@@ -280,6 +290,8 @@
 				38272249184417E2004A78D4 /* DuxQuickFindPanel.m in Sources */,
 				3827221C184417A4004A78D4 /* main.m in Sources */,
 				38272248184417E2004A78D4 /* DuxQuickFindPanelController.m in Sources */,
+				3856E7FC1B2A8337008D4387 /* QHotKeyTextField.swift in Sources */,
+				384C906C1B2FAF5000208C0C /* QHotKey.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,13 +421,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Q Launcher.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Q/Q Launcher-Prefix.pch";
 				INFOPLIST_FILE = "Q/Q Launcher-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "Q Launcher";
+				SWIFT_OBJC_BRIDGING_HEADER = "Q/Q Launcher-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -424,13 +440,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Q Launcher.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Q/Q Launcher-Prefix.pch";
 				INFOPLIST_FILE = "Q/Q Launcher-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "Q Launcher";
+				SWIFT_OBJC_BRIDGING_HEADER = "Q/Q Launcher-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
