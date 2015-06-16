@@ -370,7 +370,7 @@
   }];
   [self.contents insertObject:resultRecord atIndex:index];
   
-  if (self.lastReload && self.lastReload.timeIntervalSinceNow < -0.05)
+  if (self.lastReload && self.lastReload.timeIntervalSinceNow < -1)
     [self reload];
 }
 
