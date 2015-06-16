@@ -49,9 +49,7 @@ pascal OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
                              @"searchMap": @[
                                  @{@"path": @"/Applications", @"extensions": @"app"},
                                  @{@"path": @"/Applications/Xcode.app/Contents/Applications/", @"extensions": @"app"},
-                                 @{@"path": @"~/Applications".stringByStandardizingPath, @"extensions": @"app"},
                                  @{@"path": @"/Library/PreferencePanes", @"extensions": @"prefPane"},
-                                 @{@"path": @"~/Library/PreferencePanes".stringByStandardizingPath, @"extensions": @"prefPane"},
                                  @{@"path": @"/System/Library/PreferencePanes", @"extensions": @"prefPane"},
                                  ]};
   [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
