@@ -225,7 +225,8 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = Q;
-				LastUpgradeCheck = 0500;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Abhi Beckert";
 				TargetAttributes = {
 					3827220B184417A4004A78D4 = {
@@ -365,6 +366,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -429,6 +431,7 @@
 				GCC_PREFIX_HEADER = "Q/Q Launcher-Prefix.pch";
 				INFOPLIST_FILE = "Q/Q Launcher-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abhibeckert.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "Q Launcher";
 				SWIFT_OBJC_BRIDGING_HEADER = "Q/Q Launcher-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -448,6 +451,7 @@
 				GCC_PREFIX_HEADER = "Q/Q Launcher-Prefix.pch";
 				INFOPLIST_FILE = "Q/Q Launcher-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abhibeckert.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "Q Launcher";
 				SWIFT_OBJC_BRIDGING_HEADER = "Q/Q Launcher-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
@@ -470,6 +474,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "QTests/Q LauncherTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abhibeckert.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "Q LauncherTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -488,6 +493,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Q/Q-Prefix.pch";
 				INFOPLIST_FILE = "QTests/Q LauncherTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.abhibeckert.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "Q LauncherTests";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

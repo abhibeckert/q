@@ -19,11 +19,11 @@ class QHotKeyTextField: NSView
   override func keyDown(theEvent: NSEvent)
   {
     // check for mofifiers
-    let shiftDown = (theEvent.modifierFlags & .ShiftKeyMask != nil)
-    let commandDown = (theEvent.modifierFlags & .CommandKeyMask != nil)
-    let controlDown = (theEvent.modifierFlags & .ControlKeyMask != nil)
-    let altDown = (theEvent.modifierFlags & .AlternateKeyMask != nil)
-    let functionDown = (theEvent.modifierFlags & .FunctionKeyMask != nil)
+    let shiftDown = theEvent.modifierFlags.contains(.ShiftKeyMask)
+    let commandDown = theEvent.modifierFlags.contains(.CommandKeyMask)
+    let controlDown = theEvent.modifierFlags.contains(.ControlKeyMask)
+    let altDown = theEvent.modifierFlags.contains(.AlternateKeyMask)
+    let functionDown = theEvent.modifierFlags.contains(.FunctionKeyMask)
     
     // if there are no modifiers, reject that hotkey
     if !shiftDown && !commandDown && !controlDown && !altDown && !functionDown {
